@@ -32,13 +32,15 @@
   []
   [:form.todo-form {:on-submit handle-submit}
    [:label {:for "title"} "Title:"]
-   [:input {:type "text"
-            :value @title-input
-            :on-change #(reset! title-input (-> % .-target .-value)) }]
+   [:input#title {:type "text"
+                  :required true
+                  :value @title-input
+                  :on-change #(reset! title-input (-> % .-target .-value))}]
    [:label {:for "description"} "Description:"]
    [:input#description {:type "text"
-            :value @description-input
-            :on-change #(reset! description-input (-> % .-target .-value))}]
+                        :value @description-input
+                        :required true
+                        :on-change #(reset! description-input (-> % .-target .-value))}]
    [:input {:type "submit" :value "submit"}]
    ])
 

@@ -47,6 +47,8 @@ a:hover {
 .todo-form {
   display: flex;
   flex-direction: column;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #333;
 }
 .todo-form label {
   font-size: 1rem;
@@ -67,6 +69,14 @@ ul {
   color: white;
   border-radius: 8px;
   margin: 8px 0;
+
+  cursor: pointer;
+
+  transition: all .15s ease-in-out;
+}
+.todo-item:hover {
+  transform: scale(1.02);
+  box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.2);
 }
 .done {
   background-color: rgb(97, 208, 52);
