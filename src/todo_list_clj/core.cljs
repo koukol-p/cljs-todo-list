@@ -8,14 +8,15 @@
   {:title title :description description :done done})
 
 ;state
-(def todos (r/atom [(build-todo "Test" "Just a test" false)]))
+(def todos (r/atom [(build-todo "Test" "Just a test" false) (build-todo "Test Done" "Just a test of finished todo" true)]))
 (def title-input (r/atom ""))
 (def description-input (r/atom ""))
 
 (defn todo-item
   ;props
   [todo]
-  [:div.todo-item
+  ; conditional styling
+  [:div {:class (str "todo-item" (when (:done todo) " done"))}
    [:h3 (:title todo)]
    [:p (:description todo)]])
 
@@ -23,11 +24,13 @@
   [ev]
   (do
     (.preventDefault ev)
-    (swap! todos #(conj % (build-todo @title-input @description-input false)))))
+    (swap! todos #(conj % (build-todo @title-input @description-input false)))
+    (reset! title-input "")
+    (reset! description-input "")))
 
 (defn todo-form
   []
-  [:form {:on-submit handle-submit}
+  [:form.todo-form {:on-submit handle-submit}
    [:label {:for "title"} "Title:"]
    [:input {:type "text"
             :value @title-input
@@ -40,9 +43,11 @@
    ])
 
 (defn home-page []
-  [:div 
-   [:h2 "Todo List"]
-   [todo-form]
+  [:div.main-container
+   [:div.header
+    [:h2 "Todo List"]
+    [todo-form]]
+   
    [:ul 
     (for [todo @todos]
       [todo-item todo])]])
