@@ -52,13 +52,14 @@
    ])
 
 (defn home-page []
+  
   [:div.main-container
    [:div.header
     [:h2 "Todo List"]
     [todo-form]]
    
-   [:ul 
-    (for [todo @todos]
+   [:ul
+    (for [todo (sort-by :done @todos)]
       [todo-item todo])]])
 
 ;; -------------------------
