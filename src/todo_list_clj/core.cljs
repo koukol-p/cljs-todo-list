@@ -7,17 +7,42 @@
   [title description done]
   {:title title :description description :done done})
 
+;state
 (def todos (r/atom [(build-todo "Test" "Just a test" false)]))
+(def title-input (r/atom ""))
+(def description-input (r/atom ""))
 
 (defn todo-item
+  ;props
   [todo]
   [:div.todo-item
    [:h3 (:title todo)]
    [:p (:description todo)]])
 
+(defn handle-submit
+  [ev]
+  (do
+    (.preventDefault ev)
+    (swap! todos #(conj % (build-todo @title-input @description-input false)))))
+
+(defn todo-form
+  []
+  [:form {:on-submit handle-submit}
+   [:label {:for "title"} "Title:"]
+   [:input {:type "text"
+            :value @title-input
+            :on-change #(reset! title-input (-> % .-target .-value)) }]
+   [:label {:for "description"} "Description:"]
+   [:input#description {:type "text"
+            :value @description-input
+            :on-change #(reset! description-input (-> % .-target .-value))}]
+   [:input {:type "submit" :value "submit"}]
+   ])
+
 (defn home-page []
   [:div 
    [:h2 "Todo List"]
+   [todo-form]
    [:ul 
     (for [todo @todos]
       [todo-item todo])]])
