@@ -11,12 +11,19 @@
 (def todos (r/atom [(build-todo "Test" "Just a test" false) (build-todo "Test Done" "Just a test of finished todo" true)]))
 (def title-input (r/atom ""))
 (def description-input (r/atom ""))
-
+;@todo replace title with uid
+(defn toggle-done
+  [todo] 
+  (swap! todos #(conj
+                 (filter (fn [t] (not= (:title t) (:title todo))) @todos)
+                 (build-todo (:title todo) (:description todo) (not (:done todo)))
+                 )))
 (defn todo-item
   ;props
   [todo]
   ; conditional styling
-  [:div {:class (str "todo-item" (when (:done todo) " done"))}
+  [:div {:class (str "todo-item" (when (:done todo) " done"))
+         :on-click #(toggle-done todo)}
    [:h3 (:title todo)]
    [:p (:description todo)]])
 
